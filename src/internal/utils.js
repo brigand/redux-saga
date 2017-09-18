@@ -176,8 +176,15 @@ export const internalErr = err =>
 export const createSetContextWarning = (ctx, props) =>
   `${ctx ? ctx + '.' : ''}setContext(props): argument ${props} is not a plain object`
 
-export const wrapSagaDispatch = dispatch => action =>
-  dispatch(Object.defineProperty(action, SAGA_ACTION, { value: true }))
+export const wrapSagaDispatch = dispatch => action => {
+  const doIt = () => dispatch(Object.defineProperty(action, SAGA_ACTION, { value: true }))
+  if (action.doDispatchSync) {
+    return doIt
+  }
+  setTimeout(() => {
+    doIt()
+  }, 1)
+}
 
 export const cloneableGenerator = generatorFunc => (...args) => {
   const history = []

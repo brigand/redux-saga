@@ -433,7 +433,15 @@ var createSetContextWarning = function createSetContextWarning(ctx, props) {
 
 var wrapSagaDispatch = function wrapSagaDispatch(dispatch) {
   return function (action) {
-    return dispatch(Object.defineProperty(action, SAGA_ACTION, { value: true }));
+    var doIt = function doIt() {
+      return dispatch(Object.defineProperty(action, SAGA_ACTION, { value: true }));
+    };
+    if (action.doDispatchSync) {
+      return doIt;
+    }
+    setTimeout(function () {
+      doIt();
+    }, 1);
   };
 };
 

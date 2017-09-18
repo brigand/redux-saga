@@ -1,5 +1,5 @@
 {
-  "name": "redux-saga",
+  "name": "redux-saga-async",
   "version": "0.15.6",
   "description": "Saga middleware for Redux to handle Side Effects",
   "main": "lib/index.js",
